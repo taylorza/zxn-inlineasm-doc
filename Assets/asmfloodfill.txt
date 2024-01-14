@@ -1,0 +1,55 @@
+  10 REM Flood fill routine based on the NextBASIC code from emOOk
+  20 RUN AT 0
+  30 SAVE "asmfloodfill.bas"
+  40 CLEAR $bfff
+  50 PROC assemble()
+  60 CIRCLE 64,110,30
+  70 CIRCLE 128,80,60
+  80 CIRCLE 192,110,30
+  90 PROC fill(128,80)
+ 100 PROC fill(64,110)
+ 110 PROC fill(192,110)
+ 120 STOP 
+ 130 DEFPROC fill(x,y)
+ 140   POKE %x,x: POKE %y,192-y
+ 150   RANDOMIZE % USR $c000
+ 160 ENDPROC 
+ 170 DEFPROC Assemble()
+ 180 .asm
+ 190 ;  ld de,(coords)
+ 200 ;  call fill
+ 210 ;  ret
+ 220 ;fill
+ 230 ;  call point
+ 240 ;  ret nz
+ 250 ;  call plot
+ 260 ;  inc e
+ 270 ;  call fill
+ 280 ;  dec e
+ 290 ;  dec e
+ 300 ;  call fill
+ 310 ;  inc e
+ 320 ;  inc d
+ 330 ;  call fill
+ 340 ;  dec d
+ 350 ;  dec d
+ 360 ;  call fill
+ 370 ;  inc d
+ 380 ;  ret
+ 390 ;plot
+ 400 ;  pixelad
+ 410 ;  setae
+ 420 ;  or (hl)
+ 430 ;  ld (hl), a
+ 440 ;  ret
+ 450 ;point
+ 460 ;  pixelad
+ 470 ;  setae
+ 480 ;  and (hl)
+ 490 ; ret
+ 500 ;coords
+ 510 ;x db 0
+ 520 ;y db 0
+ 530 ;  let %x=x
+ 540 ;  let %y=y
+ 550 ENDPROC 
