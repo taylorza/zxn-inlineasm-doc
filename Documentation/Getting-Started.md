@@ -52,7 +52,7 @@ As a very simple example, we will use the ROM to print a string on the screen. Y
 
  Our next example is from the book [40 Best Machine Code Routines for the ZX Spectrum](https://www.kickstarter.com/projects/robhwson/20-best-machine-code-routines-for-the-zx-spectrum-reprint/description). The routine scrolls the screen left 1 pixel every time you call the routine.
 
-[See it in action](../Assets/asm-pixel-scroll-left.gif)]
+[See it in action](../Assets/asm-pixel-scroll-left.gif)
  ```
   10 RUN AT 3
   20 SAVE "pxleftscroll.bas"
