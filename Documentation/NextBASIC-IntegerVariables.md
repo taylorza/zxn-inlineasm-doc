@@ -79,9 +79,9 @@ Similar to the first example we are loading a value in the BC register. However,
 As before, we return to the caller with the `ret` instruction.
 
 ```
-60 ;fn2
-70 ;  ld bc, 42
-80 ;  ret
+  60 ;fn2
+  70 ;  ld bc, 42
+  80 ;  ret
 ```
 `Line 60-80` creates a second routine at address `fn2`. This is the same routine we saw in our earlier example, it just load the value `42` into the `BC` register and returns to the caller
 
