@@ -11,4 +11,4 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 ### NextBASIC Integration
 * [ToUpper$ Function](Examples/NextBASIC-ToUpper.md)
 ### Standalone Example
-* [Simple DOT Command](Example/DOTCommand-Hello.md)
+* [Simple DOT Command](Examples/DOTCommand-Hello.md)
