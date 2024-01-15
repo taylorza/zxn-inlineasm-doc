@@ -2,7 +2,7 @@
 
 This example we create a simple function to convert strings to upper case. This routine takes advantage of the fact that you can pass string arguments the `USR` and `USR$` commands.
 
-``
+```
    5 CLEAR $bfff
   10 .asm
   20 ;  ret nz ; expect string
