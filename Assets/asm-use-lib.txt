@@ -1,0 +1,8 @@
+   5 SAVE "asm-use-lib.bas"
+   6 REM Load the machine code library into memory. For this example we will allocate a bank and load it into that bank
+   7 PRINT "Loading Machine Code Routine"
+  10 BANK NEW %b
+  20 LOAD "asm-lib" BANK %b
+  30 REM Now we can call the routine as needed
+  40 PRINT "Calling Machine Code Routine"
+  50 PRINT "And the answer is "; BANK %b USR 0

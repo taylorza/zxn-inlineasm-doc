@@ -1,0 +1,12 @@
+  10 .asm
+  20 ;  output "/dot/hello"
+  30 ;  org $2000
+  40 ;  ld hl, msg
+  50 ;nxtch
+  60 ;  ld a,(hl)
+  70 ;  or a
+  80 ;  ret z
+  90 ;  rst $10
+ 100 ;  inc hl
+ 110 ;  jr nxtch
+ 120 ;msg db "Hello world",0

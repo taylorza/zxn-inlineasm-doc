@@ -1,5 +1,6 @@
   10 RUN AT 3
   20 SAVE "asmtoupper.bas"
+  25 CLEAR $bfff
   30 .asm
   40 ;  ret nz ; expect string
   50 ;  push bc    ;Save string

@@ -1,0 +1,5 @@
+   5 SAVE "asm-create-lib.bas"
+  10 .asm
+  20 ;  output "asm-lib"
+  30 ;  ld bc,42 ;Value returned
+  40 ;  ret
