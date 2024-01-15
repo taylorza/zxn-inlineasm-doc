@@ -1,4 +1,4 @@
-# Assembling code in to target bank
+# Assembling code to a memory bank
 One of the nice features of the assembler is the ability to assemble your code into a target bank outside of the standard memory map used by BASIC and the NextOS. You can also have the actual assembly code stored in dedicated banks, that addressed elsewhere in the documentation.
 
 The BANK pseudo-op is used to instruct the assembler to generate the machine code directly into the specified bank
