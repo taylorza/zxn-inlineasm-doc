@@ -105,7 +105,7 @@ The following example creates a simple flood fill routine that can be called fro
 
 ![See it in action](../Assets/asm-floodfill.gif)
 ```
-  10 REM Flood fill routine based on the NextBASIC code from emOOk
+  10 REM Flood fill routine based on the NextBASIC code from em00k
   20 RUN AT 0
   30 SAVE "asmfloodfill.bas"
   40 CLEAR $bfff

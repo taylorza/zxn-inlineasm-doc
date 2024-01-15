@@ -6,3 +6,7 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 * [Accessing NextBASIC Integer Variables](Documentation/NextBASIC-IntegerVariables.md)
 * [Assembling into a memory bank](Documentation/Assemble-to-bank.md)
 
+## Examples
+### NextBASIC Integration
+* [ToUpper$ Function](Examples/NextBASIC-ToUpper.md)
+

@@ -1,0 +1,28 @@
+  10 RUN AT 3
+  20 SAVE "asmtoupper.bas"
+  30 .asm
+  40 ;  ret nz ; expect string
+  50 ;  push bc    ;Save string
+  60 ;  push de    ; for return
+  70 ;casecvt
+  80 ;  ld a,(de)  ;Get char
+  90 ;  cp "a"     ;
+ 100 ;  jr c,next  ;Skip if < a 
+ 110 ;  cp "z"+1
+ 120 ;  jr nc,next ;Skip if > z 
+ 130 ;  and $5f    ;a..z->A..Z
+ 140 ;  ld (de),a  ;Replace char
+ 150 ;next
+ 160 ;  inc de     ;Next char
+ 170 ;  dec bc     ;Dec count
+ 180 ;  ld a,c    
+ 190 ;  or b       ;Test for 0
+ 200 ;  jr nz,casecvt 
+ 210 ;  pop de     ;Restore
+ 220 ;  pop bc     ; string ptr
+ 230 ;  ret
+ 240 a$="hello"
+ 250 PRINT FN ToUpper$(a$)
+ 260 PRINT FN ToUpper$("test")
+ 270 PRINT a$
+ 280 DEF FN ToUpper$( s$)= USR $($c000,s$)

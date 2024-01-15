@@ -1,0 +1,1 @@
+\nextdev\emulator\hdfmonkey get \nextdev\sdcard\tbblue-dev.sd /%1 Assets/%1
