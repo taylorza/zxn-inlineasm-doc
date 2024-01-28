@@ -4,9 +4,11 @@
 3. Start Writing some assembly code in NextBASIC
 
 ## Goal of the project
-One thing that I always struggle with is how much more complex it is to get into programming these days. And now with the Next, I see so many people wanting to try out assembly language but getting stuck with the tooling. My first attempt at improving this was to create a command line tool, [zxev](https://github.com/taylorza/zxenv) that will not only download and install a complete development environment but can also scaffold various project types from Next Driver projects to NEX Projects and a few things in between. This has been great, and I use it my self for all my project. That however still requires the user to work outside of the environment of the Next, and use emulators or build serial cables for debugging on real hardware etc.
+Many people are interested in learning assembly language on the Next, but they face challenges with the tools. This project aims to make assembly language as easy to learn as BASIC, by providing an environment that lets you code and test without leaving the BASIC interface. This also enables more advanced developers to seamlessly enhance their BASIC programs with assembly language whenever they need to.
 
-Enter the NextBASIC Inline Assembler. This tool allows you to write assembly code inline with your NextBASIC code, and provide some simple integrations between the two. You can use this as a starting point to learning assembly, speed up parts of your BASIC program or even build drivers and DOT commands directly from the inline assembler.
+My first attempt at improving the initial developer experience was to create a command line tool, [zxenv](https://github.com/taylorza/zxenv) that will download and install a complete development environment and scaffold different project types, such as NextZXOS Drivers, DOT Commands and NEX projects. I use it for all of my projects and it works great. However, this still requires the user to work outside the Next environment and to use emulators or build custom serial cables for debugging on real hardware.
+
+The NextBASIC Inline Assembler lets programmers discover and enjoy the benefits of Z80 Assembly language on the ZX Spectrum Next. It is easy to use, but also has advanced features that enable building larger Assembly projects, custom NextZXOS extensions, and device drivers.
 
 ## Examples to get you started
 As a very simple example, we will use the ROM to print a string on the screen. Yes, `PRINT` already does this, but we have to start somewhere :)
@@ -46,7 +48,7 @@ As a very simple example, we will use the ROM to print a string on the screen. Y
  140 RANDOMIZE USR 50000 : Call our machine code routine
  ```
 
- OK, enough of this stuff that just seems like a lot of code that does not seem to add value. I mean really all that could have been done with a simple
+ OK, enough of this stuff that just seems like a lot of code that does not seem to add any value. I mean really, all that could have been done with a simple
 
  `10 PRINT "Hello World" : GO TO 10`
 

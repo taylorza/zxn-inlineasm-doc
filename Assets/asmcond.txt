@@ -1,0 +1,11 @@
+  10 CLEAR $bfff
+  20 .asm
+  30 ;DEBUG equ 1 ; Enable debug build
+  40 ;  IF DEBUG
+  50 ;    ld a,2
+  60 ;  ELSE
+  65 ;    ld a, 4
+  70 ;  ENDIF
+  75 ;  out ($fe),a
+  80 ;  ret
+ 100 RANDOMIZE % USR $c000

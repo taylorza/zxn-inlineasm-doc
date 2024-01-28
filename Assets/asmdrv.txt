@@ -1,0 +1,43 @@
+  10 RUN AT 3
+  20 SAVE "asmdrv.bas"
+  30 .asm
+  40 ;  output "asmdrv.drv"
+  50 ;  db "NDRV"      ; Signature
+  60 ;  db "P"         ; Driver ID
+  70 ;  db RELOC_COUNT ; No. relocations
+  80 ;  db 0           ; No. 8K DivMMC banks
+  90 ;  db 0           ; No. 8K Next banks
+ 100 ;;---------------------------------------
+ 110 ;; Driver code
+ 120 ;  org 0
+ 130 ;  RELOC_START    ; Start relocation tracking 
+ 140 ;entry
+ 150 ;  ld a, b
+ 160 ;  cp $fb    
+ 170 ;  jp z, output_char
+ 180 ;  cp $7f
+ 190 ;  jp z, get_status
+ 200 ;error
+ 220 ;  xor a          ; A=0 unsupported call id
+ 230 ;  scf            ; CY=1 indicate error
+ 240 ;  ret
+ 300 ;;---------------------------------------
+ 310 ;; Call ID  $fb - output char
+ 320 ;;   E - character to print
+ 330 ;output_char
+ 340 ;  ld a, e        ; Get char to print
+ 350 ;  and 7          ; Mask for border color
+ 360 ;  out ($fe), a   ; Set border color based on the character being "printed"
+ 370 ;  or a           ; CY=0 to indicate no error
+ 380 ;  ret
+ 400 ;;---------------------------------------
+ 410 ;; Call ID  $7f - get device status
+ 420 ;get_status 
+ 430 ;  ld bc, $ffff   ; Device ready
+ 440 ;  or a           ; CY=0 to indicate no error
+ 450 ;  ret
+ 500 ;  RELOC_END      ; Stop relocation tracking
+ 510 ;  ASSERT $ < 513 ; Error if driver too big
+ 520 ;  ds 512-$       ; Pad to end of driver
+ 530 ;;
+ 540 ;  RELOC_TABLE    ; Emit relocation table for the driver

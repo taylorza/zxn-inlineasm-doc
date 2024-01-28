@@ -6,11 +6,14 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 * [Accessing NextBASIC Integer Variables](Documentation/NextBASIC-IntegerVariables.md)
 * [Assembling into a memory bank](Documentation/Assemble-to-bank.md)
 * [Assembling directly to a file](Documentation/Assemble-to-file.md)
+* [Conditional Assembly](Documentation/Conditional-Assembly.md)
 * [Pseudo-ops](Documentation/Pseudo-ops.md)
 ## Examples
 ### NextBASIC Integration
 * [ToUpper$ Function](Examples/NextBASIC-ToUpper.md)
-### Standalone Example
+### Create executable applications
 * [Simple DOT Command](Examples/DOTCommand-Hello.md)
+### Create NextZXOS Drivers
+* [Simple Printer Driver](Examples/SimplePrinterDriver.md)
 
 
