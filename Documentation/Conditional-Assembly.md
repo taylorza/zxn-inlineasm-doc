@@ -33,3 +33,36 @@ In this example we see how conditional assembly can be used to select between tw
  100 RANDOMIZE % USR $c000
  ```
 
+ ## Example 2
+
+ This example builds on the previous example, demonstrating nested conditionals as well as referencing NextBASIC integer variables to control what is assembled.
+
+ ```
+  10 CLEAR $bfff
+  20 FOR %d=0 TO 1
+  30 FOR %l=0 TO 1
+  40 .asm
+  50 ;DEBUG equ %d
+  60 ;  IF DEBUG
+  70 ;    IF %l=1
+  80 ;      ld a,2
+  90 ;    ELSE
+ 100 ;      ld a, 3
+ 110 ;    ENDIF
+ 120 ;  ELSE
+ 130 ;    IF %l=0
+ 140 ;      ld a, 4
+ 150 ;    ELSE
+ 160 ;      ld a, 6
+ 170 ;    ENDIF
+ 180 ;  ENDIF
+ 190 ;  out ($fe),a
+ 200 ;  ret
+ 210 RANDOMIZE % USR $c000
+ 220 PRINT AT 0,0;"DEBUG=";%d
+ 230 PRINT "LEVEL=";%l
+ 240 PRINT "Press any key to re-assemble": PAUSE 0
+ 250 NEXT %l: NEXT %d
+ ```
+
+
