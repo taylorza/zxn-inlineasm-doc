@@ -1,0 +1,1 @@
+\nextdev\emulator\hdfmonkey put \nextdev\sdcard\tbblue-dev.sd %1 /

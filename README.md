@@ -13,6 +13,7 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 * [ToUpper$ Function](Examples/NextBASIC-ToUpper.md)
 ### Create executable applications
 * [Simple DOT Command](Examples/DOTCommand-Hello.md)
+* [BFIND DOT Command](Examples/DOTCommand-bfind.md)
 ### Create NextZXOS Drivers
 * [Simple Printer Driver](Examples/SimplePrinterDriver.md)
 

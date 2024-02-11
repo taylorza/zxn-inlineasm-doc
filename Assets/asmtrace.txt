@@ -1,0 +1,252 @@
+#program asmtrace
+  10 RUN AT 3
+  20 SAVE "asmtrace.bas"
+  30 CLEAR $7fff
+  40 GO SUB %120
+  50 RANDOMIZE % USR $8008
+  60 FOR i=1 TO 1000
+  70 PRINT AT 0,0;i
+  90 NEXT i
+ 100 RANDOMIZE % USR $800b
+ 110 STOP 
+ 120 .asm
+ 130 ;  org $8000
+ 140 ;  db "TRACE   "
+ 150 ;  jp traceOn
+ 160 ;  jp traceOff
+ 170 ;
+ 180 ;; Setup interrupts
+ 190 ;
+ 200 ;init
+ 210 ;  nreg $c0,ivt & %11100000 | 1
+ 220 ;  nreg $c4,%00000001  ;Enable ULA interrupt
+ 230 ;  nreg $c5,%00000000  ;Disable timer interrupts
+ 240 ;  nreg $c6,%00000000  ;Disable UART interrupts
+ 250 ;  ld a,$80            ;Load IVT high byte
+ 260 ;  ld i,a              ; into I register
+ 270 ;  im 2                ;Switch to IM 2  
+ 280 ;  ld a,1
+ 290 ;  ld (initialized),a  ;Set initialized flag
+ 300 ;  ret
+ 310 ;initialized db 0
+ 320 ;state       db 0
+ 330 ;
+ 340 ;; TRACE ON
+ 350 ;
+ 360 ;traceOn
+ 370 ;  di
+ 380 ;  ld a,1              ;Trace flag ON
+ 390 ;  jr setTrace         ;Set the trace flag
+ 400 ;
+ 410 ;; TRACE OFF
+ 420 ;
+ 430 ;traceOff
+ 440 ;  di
+ 450 ;  xor a              ;Trace flag OFF
+ 460 ;setTrace
+ 470 ;  ld (state), a      ;Save trace flag value
+ 480 ;  ld a,(initialized) ;Get initialization status
+ 490 ;  or a               ;If 0
+ 500 ;  call z,init        ;  call init
+ 510 ;  ei
+ 520 ;  ret
+ 530 ;
+ 540 ;; Default interrupt handler
+ 550 ;
+ 560 ;inthandler
+ 570 ;  ei
+ 580 ;  reti
+ 590 ;
+ 600 ;; ULA interrupt handler
+ 610 ;; From Super Charge Your Spectrum (Page 134)
+ 620 ;ulahandler 
+ 630 ;  rst $38            ;Call ROM handler             
+ 640 ;  di                 ;Disable interrupts again
+ 650 ;  push af
+ 660 ;  ld a,(state)
+ 670 ;  or a
+ 680 ;  jr z,done
+ 690 ;  ld a,(23610)       ;ROM ERRNR 
+ 700 ;  inc a
+ 710 ;  jr nz,done                 
+ 720 ;  push bc
+ 730 ;  push de
+ 740 ;  push hl
+ 750 ;  ld hl,(23621)      ;PPC System Variable
+ 760 ;  ld a,h              
+ 770 ;  or l
+ 780 ;  jr z, exit         ;  Program is not running
+ 790 ;  xor a
+ 800 ;  ld b,a
+ 810 ;  ld c,a
+ 820 ;  ld de,1000         ;Thousands
+ 830 ;  call calcDigit
+ 840 ;  ld c,1
+ 850 ;  ld de,100          ;Hundreds
+ 860 ;  call calcDigit
+ 870 ;  ld c,2
+ 880 ;  ld de,10           ;Tens
+ 890 ;  call calcDigit
+ 900 ;  ld c,3
+ 910 ;  ld a,l             ;Units in L
+ 920 ;  call printA
+ 930 ;exit
+ 940 ;  pop hl
+ 950 ;  pop de
+ 960 ;  pop bc
+ 970 ;done
+ 980 ;  pop af
+ 990 ;  ei
+1000 ;  reti
+1010 ;
+1020 ;;Calculate and print digit
+1030 ;
+1040 ;calcDigit
+1050 ;  xor a
+1060 ;nxt
+1070 ;  sbc hl,de         
+1080 ;  inc a
+1090 ;  jr nc, nxt
+1100 ;  add hl,de
+1110 ;  dec a
+1120 ;; |
+1130 ;; | Fall through to printA
+1140 ;; v
+1150 ;; Print Digit in A
+1160 ;
+1170 ;printA
+1180 ;  push hl
+1190 ;  ld hl,$401c        ;Start address for digit
+1200 ;  add hl,bc          ;  offset by C
+1210 ;  add a,a
+1220 ;  add a,a
+1230 ;  add a,a
+1240 ;  ex de,hl
+1250 ;  ld c,a
+1260 ;  ld hl,$3d80
+1270 ;  add hl,bc
+1280 ;  ld b,8             ;8 rows per character
+1290 ;row
+1300 ;  ld a,(hl)
+1310 ;  cpl
+1320 ;  ld (de),a
+1330 ;  inc hl
+1340 ;  inc d
+1350 ;  djnz row
+1360 ;  pop hl
+1370 ;  ret
+1380 ;
+1390 ;; Interrupt Vector Table
+1400 ;
+1410 ;  align 32
+1420 ;ivt
+1430 ;  dw inthandler ; 0-line
+1440 ;  dw inthandler ; 1-uart0 rx
+1450 ;  dw inthandler ; 2-uart1 rx
+1460 ;  dw inthandler ; 3-ctc0
+1470 ;  dw inthandler ; 4-ctc1
+1480 ;  dw inthandler ; 5-ctc2
+1490 ;  dw inthandler ; 6-ctc3
+1500 ;  dw inthandler ; 7-ctc4
+1510 ;  dw inthandler ; 8-ctc5
+1520 ;  dw inthandler ; 9-ctc6
+1530 ;  dw inthandler ;10-ctc7
+1540 ;  dw ulahandler ;11-ula
+1550 ;  dw inthandler ;12-uart0 tx
+1560 ;  dw inthandler ;13-uart1 tx
+1570 ;  dw inthandler ;14-unused
+1580 ;  dw inthandler ;15-unused
+1600 ;
+1601 ;; Digits
+1602 ;
+1603 ;; $30 - Character: '0'          CHR$(48)
+1604 ;        db    %00000000
+1605 ;        db    %00111100
+1606 ;        db    %01000110
+1607 ;        db    %01001010
+1608 ;        db    %01010010
+1609 ;        db    %01100010
+1610 ;        db    %00111100
+1612 ;        db    %00000000
+1613 ;; $31 - Character: '1'          CHR$(49)
+1614 ;        db    %00000000
+1615 ;        db    %00011000
+1616 ;        db    %00101000
+1617 ;        db    %00001000
+1618 ;        db    %00001000
+1619 ;        db    %00001000
+1621 ;        db    %00111110
+1622 ;        db    %00000000
+1623 ;; $32 - Character: '2'          CHR$(50)
+1624 ;        db    %00000000
+1625 ;        db    %00111100
+1626 ;        db    %01000010
+1627 ;        db    %00000010
+1628 ;        db    %00111100
+1629 ;        db    %01000000
+1631 ;        db    %01111110
+1632 ;        db    %00000000
+1633 ;; $33 - Character: '3'          CHR$(51)
+1634 ;        db    %00000000
+1635 ;        db    %00111100
+1636 ;        db    %01000010
+1637 ;        db    %00001100
+1638 ;        db    %00000010
+1639 ;        db    %01000010
+1641 ;        db    %00111100
+1642 ;        db    %00000000
+1643 ;; $34 - Character: '4'          CHR$(52)
+1644 ;        db    %00000000
+1645 ;        db    %00001000
+1646 ;        db    %00011000
+1647 ;        db    %00101000
+1648 ;        db    %01001000
+1649 ;        db    %01111110
+1651 ;        db    %00001000
+1652 ;        db    %00000000
+1653 ;; $35 - Character: '5'          CHR$(53)
+1654 ;        db    %00000000
+1655 ;        db    %01111110
+1656 ;        db    %01000000
+1657 ;        db    %01111100
+1658 ;        db    %00000010
+1659 ;        db    %01000010
+1661 ;        db    %00111100
+1662 ;        db    %00000000
+1663 ;; $36 - Character: '6'          CHR$(54)
+1664 ;        db    %00000000
+1665 ;        db    %00111100
+1666 ;        db    %01000000
+1667 ;        db    %01111100
+1668 ;        db    %01000010
+1669 ;        db    %01000010
+1671 ;        db    %00111100
+1672 ;        db    %00000000
+1673 ;; $37 - Character: '7'          CHR$(55)
+1674 ;        db    %00000000
+1675 ;        db    %01111110
+1676 ;        db    %00000010
+1677 ;        db    %00000100
+1678 ;        db    %00001000
+1679 ;        db    %00010000
+1681 ;        db    %00010000
+1682 ;        db    %00000000
+1683 ;; $38 - Character: '8'          CHR$(56)
+1684 ;        db    %00000000
+1685 ;        db    %00111100
+1686 ;        db    %01000010
+1687 ;        db    %00111100
+1688 ;        db    %01000010
+1689 ;        db    %01000010
+1691 ;        db    %00111100
+1692 ;        db    %00000000
+1693 ;; $39 - Character: '9'          CHR$(57)
+1694 ;        db    %00000000
+1695 ;        db    %00111100
+1696 ;        db    %01000010
+1697 ;        db    %01000010
+1698 ;        db    %00111110
+1699 ;        db    %00000010
+1700 ;        db    %00111100
+1701 ;        db    %00000000
+

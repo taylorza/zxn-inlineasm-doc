@@ -1,0 +1,230 @@
+ 100 RUN AT 3
+ 110 SAVE "asmfind.bas"
+ 120 .asm
+ 130 ;  output "/dot/bfind"
+ 140 ;  org $2000
+ 150 ;PROG    equ     $5c53
+ 160 ;VARS    equ     $5c4b
+ 170 ;EPPC    equ     $5c49
+ 180 ;PPC     equ     $5C45
+ 190 ;BUFLEN  equ     $80
+ 200 ;find
+ 210 ;  ld a,l
+ 220 ;  or h
+ 230 ;  jp z,showusage     ;Show usage if no arguments
+ 240 ;
+ 250 ;  ld (oldsp),sp
+ 260 ;
+ 270 ;  ld a,(hl)         
+ 280 ;  cp "@"             ;Check for line switch
+ 290 ;  jr z,findlineno    ;  find starting line
+ 300 ;  ld de,(PROG)       ;else start at first line
+ 310 ;  ld (line),de       
+ 320 ;  jr cpystr          ;Copy search string
+ 330 ;
+ 340 ;parselineno
+ 350 ;  ld b,5
+ 360 ;nxtdigit
+ 370 ;  ld a,(hl)          ;Get argument character
+ 380 ;  cp $0d             ;Check for end of argument
+ 390 ;  jp z,r_badsrch     ;  exit if no search string
+ 400 ;  cp "0"             ;Else check for valid digit
+ 410 ;  ret c
+ 420 ;  cp "9"+1
+ 430 ;  ret nc
+ 440 ;  sub "0"            ;ASCII to 0-9
+ 450 ;  push hl
+ 460 ;    ld hl,(lineno)   
+ 470 ;    ld e,l
+ 480 ;    ld d,h
+ 490 ;    add hl,hl        ;x2
+ 500 ;    adc hl,hl        ;x4
+ 510 ;    adc hl,hl        ;x8
+ 520 ;    adc hl,de
+ 530 ;    adc hl,de        ;x10
+ 540 ;    add hl,a         ;+unit value
+ 550 ;    ld (lineno),hl   ;update line no
+ 560 ;  pop hl
+ 570 ;  inc hl             ;move to next digit
+ 580 ;  dec b
+ 590 ;  jp z,r_badline
+ 600 ;  jr nxtdigit
+ 610 ;  
+ 620 ;findlineno
+ 630 ;  inc hl             ;Skip '@'
+ 640 ;  call parselineno
+ 650 ;  cp $20             ;Expect space
+ 660 ;  jp nz,r_badline    ;  else exit with error
+ 670 ;  inc hl             ;Skip space
+ 680 ;  push hl            ;Save commandline
+ 690 ;    ld hl,(PROG)
+ 700 ;cmplineno
+ 710 ;    push hl          ;Save source line
+ 720 ;      ld d,(hl)         
+ 730 ;      inc hl
+ 740 ;      ld e,(hl)      ;DE-Current line no
+ 750 ;      ld hl,(lineno) ;HL-Target line no
+ 760 ;      or a
+ 770 ;      ex de,hl
+ 780 ;      sbc hl,de      ;Compare current with target
+ 790 ;    pop hl           ;Restore source line
+ 800 ;    jr nc,atline     ;If current>=target set start
+ 810 ;    inc hl
+ 820 ;    inc hl           ;Skip line number
+ 830 ;    ld e,(hl)        ;Load length in DE
+ 840 ;    inc hl
+ 850 ;    ld d,(hl)
+ 860 ;    inc hl           ;Point to start of code
+ 870 ;    add hl,de        ;Point to end of line
+ 880 ;    ld de,(VARS)     ;Check for end of source
+ 890 ;    sbc hl,de
+ 900 ;    add hl,de        ;If less than target
+ 910 ;    jr c,cmplineno   ;  continue search
+ 920 ;  pop hl
+ 930 ;  ret
+ 940 ;atline  
+ 950 ;  ld (line),hl       ;Set start line for search
+ 960 ;  pop hl             ;Restore commandline
+ 970 ;
+ 980 ;cpystr
+ 990 ;  ld a,(hl)        
+1000 ;  cp 33              ;Check for whitespace
+1010 ;  inc hl
+1020 ;  jr c,cpystr 
+1030 ;  dec hl             ;Move back to char     
+1040 ;  ld de,str
+1050 ;  ld b,BUFLEN-1
+1060 ;cpyloop
+1070 ;  or a
+1080 ;  jr z,search        ;If 0-terminator start search
+1090 ;  cp $0d      
+1100 ;  jr z,search        ;If eol start search
+1110 ;  call toupper       ; else convert to upper case
+1120 ;  ld (de),a          ; and copy to search buffer
+1130 ;  inc de
+1140 ;  inc hl
+1150 ;  ld a,(hl)          ;Load next character
+1160 ;  djnz cpyloop       ;Loop to copy
+1170 ;
+1180 ;r_badsrch
+1190 ;  ld hl,e_badsrch
+1200 ;  jr report          ;Error if string too long
+1210 ;
+1220 ;search
+1230 ;  ld a,$0d
+1240 ;  ld (de),a          ;Add terminator to str
+1250 ;
+1260 ;  ld hl,(line)       ;Get pointer to source line
+1270 ;searchline
+1280 ;  ld a,(hl)          ;Read line number in big-endian
+1290 ;  ld (lineno+1),a 
+1300 ;  inc hl
+1310 ;  ld a,(hl)
+1320 ;  ld (lineno),a
+1330 ;  inc hl             ;Move to length
+1340 ;  inc hl
+1350 ;  inc hl             ;Skip length
+1360 ;
+1370 ;  call cmpistr
+1380 ;  jr z,setlineno
+1390 ;
+1400 ;  inc hl             ;Move to next char on line
+1410 ;  or a
+1420 ;  ld de,(VARS)
+1430 ;  sbc hl,de
+1440 ;  add hl,de
+1450 ;  jp nc,r_nfound
+1460 ;  jr searchline 
+1470 ;
+1480 ;r_nfound
+1490 ;  ld hl,m_nfound
+1500 ;  jr report
+1510 ;
+1520 ;nomatch    
+1530 ;  pop hl
+1540 ;  cp $0d
+1550 ;  jr z,notfound
+1560 ;  ld a,(de)
+1570 ;  cp $0d
+1580 ;  jr z,notfound
+1590 ;  inc hl
+1600 ;; |
+1610 ;; | Fall through to cmpistr
+1620 ;; v
+1630 ;cmpistr
+1640 ;  ld de,str
+1650 ;  push hl
+1660 ;cmpch
+1670 ;  ld a,(de)
+1680 ;  cp $0d             ;End of search string
+1690 ;  jr z,match         ;  we match all prior chars
+1700 ;  ld b,a
+1710 ;  ld a,(hl)
+1720 ;  call toupper       ;Convert to upper case
+1730 ;  cp b               ;  before compare
+1740 ;  jr nz,nomatch
+1750 ;  inc de
+1760 ;  inc hl
+1770 ;  cp $0d             ;Check for eos
+1780 ;  jr z,match
+1790 ;  jr cmpch
+1800 ;
+1810 ;notfound
+1820 ;  xor a
+1830 ;  inc a              ;Clear Z-flag
+1840 ;  ret
+1850 ;match
+1860 ;  pop hl
+1870 ;  ret
+1880 ;
+1890 ;setlineno
+1900 ;  ld hl,(lineno)
+1910 ;  ld (EPPC),hl
+1920 ;  ld (PPC),hl
+1930 ;  ld hl,m_found
+1940 ;  jr report
+1950 ;  
+1960 ;toupper
+1970 ;  cp "a"  
+1980 ;  ret c
+1990 ;  cp "z"+1
+2000 ;  ret nc
+2010 ;  and %11011111      ;Change to upper case
+2020 ;  ret
+2030 ;
+2040 ;showusage
+2050 ;  ld hl,usage
+2060 ;printstr
+2070 ;  ld a,(hl)
+2080 ;  or a
+2090 ;  ret z
+2100 ;  rst $10
+2110 ;  inc hl
+2120 ;  jr printstr
+2130 ;
+2140 ;r_badline
+2150 ;  ld hl,e_badline
+2160 ;report
+2170 ;  xor a              ;Flag report back to BASIC
+2180 ;  scf
+2190 ;  ld sp,(oldsp)
+2200 ;  ret
+2210 ;
+2220 ;exit
+2230 ;  xor a           
+2240 ;  ld sp,(oldsp)      ;Restore stack and exit
+2250 ;  ret
+2260 ;
+2270 ;e_badline db "Invalid line numbe","r"|$80
+2280 ;e_badsrch db "Invalid search strin","g"|$80
+2290 ;m_nfound  db "Not "
+2300 ;m_found   db "Foun","d"|$80
+2310 ;usage db "BASIC Find String v0.1",$0d
+2320 ;      db "bfind [@nnnn] <str>",$0d
+2330 ;      db " @nnnn line to start search",$0d
+2340 ;      db " <str> - string to find",$0d,$0d,0
+2350 ;
+2360 ;oldsp   dw 0        ;entry stack pointer
+2370 ;lineno  dw 0        ;current line number
+2380 ;line    dw 0        ;pointer to current line
+2390 ;str     ds BUFLEN   ;string to search for
