@@ -14,9 +14,11 @@ This will launch the DOT command and scan the source code for the string "usage 
 In addition to doing a global search, you can also specify an `@` argument to specify a location to start the search from. There are two forms of the argument, with with an explicit line number and the other with no line number specified.
 
 `.bfind @500 usage db`
+
 Will search for the string "usage db" starting from line 500 and will not wrap back to the start of the source code.
 
 `.bfind @ usage db`
+
 Will search for the string "usage db" starting after the current line in the editor. This form is most useful when used immediately after a global search to search for the next occurrence of a search string.
 
 ```
