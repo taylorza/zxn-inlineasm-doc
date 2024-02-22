@@ -31,7 +31,7 @@ Only useful inside a relocation block.
 Aligns the next instruction or data element to the specified boundary. The alignment must be a power of 2
 
 **Example**
-Aligns the next instruction to an address on an 8 byte boundary. If padding is required to move the boundary, the padded memory fill be zeroed.
+Aligns the next instruction to an address on an 8 byte boundary. If padding is required to move the boundary, the padded memory will be zeroed.
 ```
 ALIGN 8
 ```
@@ -128,7 +128,7 @@ WHITE   EQU 7
 Can be used to exclude certain code section from assembly based on the specified conditions. The condition can be any valid constant expression, including referencing NextBASIC Integer variables. Conditional code blocks can be nested up to 7 levels deep.
 
 **Example**
-In the following example the register A will be zeroed using `xor`. Changing the `0` (false) in the `IF` to a non-Zero value like `1` will cause the `ld a,0` path to be assembled.
+In the following example the register A will be zeroed using `xor`. Changing the `0` (false) in the `IF` to a non-zero value like `1` will cause the `ld a,0` path to be assembled.
 ```
   IF 0
     ld a, 0
@@ -138,7 +138,7 @@ In the following example the register A will be zeroed using `xor`. Changing the
 ```
 
 ## LET
-Assigns a value to a NExtBASIC integer variable. This is an assembly time assignment.
+Assigns a value to a NextBASIC integer variable. This is an assembly time assignment.
 
 **Example**
 Assign the program counter for the next instruction to be assembled to the `%p` NextBASIC integer variable
@@ -147,6 +147,8 @@ LET %p = $
 ```
 
 ## ORG
+*To avoid corrupting BASIC you should protect the target memory with CLEAR before calling the assembler, e.g. with CLEAR 32767*
+
 The behavior of this pseudo-op depends on the assembly target.
 
 |Target|Behavior|
