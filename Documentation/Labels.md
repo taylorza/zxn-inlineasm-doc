@@ -1,28 +1,26 @@
 # Labels
-The assembler supports global and local or scoped labels. Global labels need to be unique across the entire program unit while local labels need to be unique with the current scope.
+The assembler recognizes both global and local (or scoped) labels. Global labels must be unique throughout the entire program, whereas local labels must be unique within their respective scope.
 
 ## Global Labels
-Labels are identify memory addresses or constant values that can be references in the assembly application. Defining a label is as simple as typing a name starting in the left most column right against the `;` that introduces the line of assembly code.
+Labels serve as identifiers for memory addresses or constants within an assembly application. To define a label, simply type a name at the beginning of the line, immediately followed by the ; that starts the assembly code line.
 
-In this example we create a simple label called `loop` and then jump to the label in an infinite loop :)
+For instance, by defining a label named loop, we can easily refer to it in an assembly instruction to create an infinite loop, like so:
 ```
   10 .asm
   20 ;loop
   30 ;  jp loop
 ```
 
-The label `loop` represents the memory address that the code at that point is being assembled to. When you reference the label, the assembler will replace the label with the memory address represented by the label at the time of assembly.
+The `loop` label denotes the memory address where the corresponding code is assembled. During assembly, any reference to `loop` is substituted with its actual memory address.
 
-In the above example, `loop` is a global label, which means that you cannot declare another label called `loop` without the assembler raising a "duplicate definition" error. This can be a little inconvenient, since you now need to create unique names for labels and sometimes you would like to use a consistent label name when you have similar pattern.
+In our example, `loop` is a global label. This designation means it must be unique; otherwise, the assembler will flag it with a “duplicate definition” error. While this ensures label uniqueness, it can be cumbersome when you want to reuse a label name for similar code patterns.
 
-This brings us to local or scoped labels. Every global label creates a new scope, within this scope you can create local labels that without worrying about name conflicts with local labels in other scopes. Of course you cannot use the same local label name within the same scope.
+That’s where local or scoped labels come in handy. Each global label initiates a new scope, allowing you to define local labels within it. These local labels won’t conflict with others in different scopes. However, within the same scope, you must still avoid duplicate local label names
 
 ## Local Labels (v0.5e and later)
-Like global labels, local labels identify memory addresses or constant values. What differentiates a local label from a global label is that local labels are prefixed with a `.`. 
+Local labels, similar to global labels, are used to identify memory addresses or constant values. The distinction lies in the prefix of a local label, which is a `.`. This differentiates it from a global label and confines its scope.
 
-An example will make this clearer. The example will use has two routines, one that prints characters to the screen and another that sends characters out the serial port. 
-
-First lets look at how using only global labels the code might look
+Here’s how you might structure your code using only global labels:
 ```
   10 .asm
   20 ;print
@@ -56,9 +54,9 @@ First lets look at how using only global labels the code might look
  ...
 ```
 
-In this contrived example you see that we use a similar pattern when reaching the end of the string to process ie. we jump out of the print or send loop. Here we had to create two different labels `printDone` and `sendDone` to ensure that we jump to the correct termination location for the respective routines, we also need to use unique names for the target address to loop through each character. In fact, we could not use the same naming pattern `printCh` and `nextCh` because another routine with the global label `sendCh` already exists.
+In this example, we encounter a common pattern at the end of string processing: exiting the print or send loop. Originally, we had to use distinct labels, `printDone` and `sendDone`, to differentiate the exit points for each routine. Similarly, unique names were required for each character-processing address. The use of `sendCh` was not possible due to the preexistence of a sendCh global label.
 
-Using local labels the burden for creating unique names is reduced, contrast the previous example with the example below that uses local labels.
+However, with local labels, the need for unique global names diminishes. Observe how the following example employs local labels to simplify the naming process
 
 ```
   10 .asm
@@ -92,8 +90,7 @@ Using local labels the burden for creating unique names is reduced, contrast the
  ...
  ...
 ```
-
-Here we see that the `.ch` and `.done` labels are local to their respective routines and we could reuse those name across the two routines without conflicts. The label `print` creates a new scope and all labels prefixed with a `.` are local to that scope, in the same way the label `send` creates a new scope.
+In this setup, the `.ch` and `.done` labels are confined to their respective routines, allowing for their reuse across different routines without naming conflicts. The `print` label establishes a new scope, and any labels beginning with a `.` are considered local to this scope. Similarly, the `send` label defines its own scope.
 
 ## Label names
 Label names must meet the following requirements
@@ -103,10 +100,10 @@ Label names must meet the following requirements
 |Must start with|`.` or `_` or `a..z`|
 |Rest of the name|`.` or `_` or `a..z` or `0..9`|
 
-When a label is prefixed with a `.` it is scoped to the most recently declared global label prior to its declaration. Due to the way local labels are implemented, the maximum length of a local label is determined by the length of the name of the scope label. For example, the `.ch` label in the `print` scope has an effective label length of 8, while the `.ch` label in the `send` scope has an effective length of 7.
+When prefixed with a `.`, a label becomes scoped to the global label most recently declared before it. The maximum length of a local label is contingent upon the length of its scope label’s name. For instance, within the `print` scope, the `.ch` label effectively has a length of 8 characters, whereas in the `send` scope, it has a length of 7 characters
 
 ## Referencing local labels across scopes
-If you do find yourself needing to reference a local label in another scope, you can use a fully qualified label name. For example, if you wanted to jump the `.done` label in the `print` routine you could do the following from outside of the `print` routines scope.
+If you need to reference a local label from a different scope, you can use its fully qualified name. For instance, to jump to the `.done` label within the `print` routine from an external scope, you could use the following method:
 
 ```
   jp print.done
