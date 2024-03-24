@@ -3,6 +3,7 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 
 ## Documentation
 * [Getting Started](Documentation/Getting-Started.md)
+* [Labels](Documentation/Labels.md)
 * [Accessing NextBASIC Integer Variables](Documentation/NextBASIC-IntegerVariables.md)
 * [Assembling into a memory bank](Documentation/Assemble-to-bank.md)
 * [Assembling directly to a file](Documentation/Assemble-to-file.md)
