@@ -96,12 +96,12 @@ Using local labels the burden for creating unique names is reduced, contrast the
 Here we see that the `.ch` and `.done` labels are local to their respective routines and we could reuse those name across the two routines without conflicts. The label `print` creates a new scope and all labels prefixed with a `.` are local to that scope, in the same way the label `send` creates a new scope.
 
 ## Label names
-Label names have the following restriction
-
+Label names must meet the following requirements
+|||
 |--|--|
 |Max length|15|
 |Must start with|`.` or `_` or `a..z`|
-|Rest of the name|`.` or `_` or `a..z` or `0..9`
+|Rest of the name|`.` or `_` or `a..z` or `0..9`|
 
 When a label is prefixed with a `.` it is scoped to the most recently declared global label prior to its declaration. Due to the way local labels are implemented, the maximum length of a local label is determined by the length of the name of the scope label. For example, the `.ch` label in the `print` scope has an effective label length of 8, while the `.ch` label in the `send` scope has an effective length of 7.
 
