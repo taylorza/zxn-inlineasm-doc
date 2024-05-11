@@ -1,5 +1,7 @@
 # Labels
-The assembler recognizes both global and local (or scoped) labels. Global labels must be unique throughout the entire program, whereas local labels must be unique within their respective scope.
+The assembler recognizes both global and local (or scoped) labels. Global labels must be unique throughout the entire program, whereas local labels must be unique within their respective scope. 
+
+Starting from version 0.5g, the `_` symbol can be utilized independently to establish anonymous labels. For enhanced readability, you have the option to append a `:` following any label definition.
 
 ## Global Labels
 Labels serve as identifiers for memory addresses or constants within an assembly application. To define a label, simply type a name at the beginning of the line, immediately followed by the ; that starts the assembly code line.
@@ -107,6 +109,31 @@ If you need to reference a local label from a different scope, you can use its f
 
 ```
   jp print.done
+```
+
+## Anonymous Labels (v0.5g and later)
+Anonymous labels are a powerful tool for creating jump targets in compact routines, eliminating the need for descriptive names. They are especially beneficial in small routines with clear local loops or jumps. It’s important to note that any instruction referencing an anonymous label will point to the nearest such label.
+
+Here’s how you can use them:
+
+`_` is used to create a new anonymous label.
+
+`-_` points to the anonymous label immediately preceding the instruction.
+
+`+_` points to the anonymous label immediately following the instruction.
+
+Let’s look at an example that illustrates the use of two anonymous labels and how you can selectively branch to either one. For readability, we’ve placed an optional `:` after the anonymous labels.
+
+```
+_:
+  ld a, (hl)
+  or a
+  jr z, +_      ; if register A is zero, jump forward to the next anonymous label
+  rst $10
+  inc hl
+  jr -_         ; jump back to the preceding anonymous label
+_:
+  ret
 ```
 
 
