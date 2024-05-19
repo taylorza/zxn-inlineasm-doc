@@ -153,7 +153,7 @@ The behavior of this pseudo-op depends on the assembly target.
 
 |Target|Behavior|
 |------|--------|
-|Standard memory|The code is assembled starting at the address specified by `ORG`, and label addresses are calculated relative to the address specified|
+|Standard memory|The code is assembled starting at the address specified by `ORG`, and label addresses are calculated relative to the address specified.  If you omit, the assembler will default to an ORG of $c000 (49152)|
 |Memory Bank|The code is assembled to the specified bank and offset and label addresses are calculated relative to the address specified|
 |Output to file|The code is assembled directly to the target file and label addresses are calculated relative to the address specified|
 
