@@ -1,0 +1,23 @@
+  10 CLEAR $bfff
+  20 .asm
+  30 ;  bank 0
+  40 ;  org $c000
+  50 ;start
+  60 ;  ld sp,stacktop
+  70 ;  ld a,2
+  80 ;  call $1601 ;Open chan 2
+  90 ;  ld hl,msg
+ 100 ;nxtch
+ 110 ;  ld a,(hl)
+ 120 ;  or a
+ 130 ;  jr z,done
+ 140 ;  rst $10
+ 150 ;  inc hl
+ 160 ;  jr nxtch
+ 170 ;done
+ 180 ;  jr $
+ 190 ;msg db "Hello world",0
+ 200 ;  ds 32      ;Stack space
+ 210 ;stacktop equ $
+ 220 ;;-------------------------
+ 230 ;  savenex "hello.nex",start, stacktop

@@ -19,6 +19,7 @@
 [RELOC_END](#reloc_end)
 [RELOC_START](#reloc_start)
 [RELOC_TABLE](#reloc_table)
+[SAVENEX](#savenex)
 
 # $ (dollar)
 Returns the current address/program counter at the point of assembly
@@ -62,6 +63,12 @@ BANK %b
 Assemble to bank 40 at offset 256
 ```
 BANK 40, 256
+```
+
+Version 0.6
+Assemble to bank 40 at offset 256 and clear the bank before assembly. Note the optional offset is skipped.
+```
+BANK 40,,1
 ```
 
 ## BRK
@@ -185,6 +192,14 @@ Start a relocation block. The assembler will start tracking relocations at this 
 
 ## RELOC_TABLE
 Emits the relocation table. This is a raw dump of the high byte of every address that needs to be patched to relocate the code. The format of this table is specifically designed to support the creation of NextZXOS Drivers.
+
+## SAVENEX
+Generated a NEX file from the assembled code. You need to use the [BANK](#bank) pseudo-op to explicitly indicate which banks should be included in the NEX file.
+
+Syntax:
+```
+SAVENEX "filename.nex",start_address,stack_address[,required_ram][,entry_bank]
+```
 
 
 

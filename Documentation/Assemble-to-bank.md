@@ -7,9 +7,13 @@ Syntax of the BANK pseudo-op
 ```
   BANK bankNumber[,offset]
 ```
+Version 0.6
+```
+  BANK banknumber[,offset[,clear]]
+```
 * *bankNumber* is the bank that you want to target
 * *offset* is an optional offset into the bank to start the assembly. If not specified the offset defaults to 0.
-
+* *clear* is an optional flag, a non-zero value indicate that the bank should be cleared prior to assembling into it. If not specified the flag defaults to 0, do not clear the bank.
 
 For our first example, we will arbitrarily choose 40 as our target bank and hope it does not conflict with anything else loaded. We will solve this issue shortly but first lets keep the example simple.
 

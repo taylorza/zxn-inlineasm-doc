@@ -15,6 +15,7 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 ### Create executable applications
 * [Simple DOT Command](Examples/DOTCommand-Hello.md)
 * [BFIND DOT Command](Examples/DOTCommand-bfind.md)
+* [Simple NEX File](Examples/NEX-Hello.md)
 ### Create NextZXOS Drivers
 * [Simple Printer Driver](Examples/SimplePrinterDriver.md)
 
