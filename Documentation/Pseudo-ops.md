@@ -146,11 +146,11 @@ In the following example the register A will be zeroed using `xor`. Changing the
 ```
 
 ## INCLUDE
-Include external source files in the current source stream being assembled. Includes can be nested up to 8 levels deep, at each level there is no hard limit on the number of files that can be included. 
+Include external source files in the current assembly stream. You can nest includes up to 8 levels deep, and there’s no strict limit on the number of files you can include at each level.
 
-Included source files do not follow the NextBASIC line numbering scheme or require a `;` to introduce assembly code lines. This facilitates the use of assembly libraries that can be shared by other assemblers as long as the code in the source file is compatible with the NextBASIC inline assembler.
+The included source files don’t adhere to the NextBASIC line numbering scheme. They also don’t require a semicolon (;) to introduce assembly code lines. This flexibility allows you to use assembly libraries from other assemblers as long as they are compatible with the NextBASIC inline assembler.
 
-Errors reported from included files will indicate the file name and line number within the file that contains the offending instructions.
+When errors occur in included files, the reported information will specify the file name and line number containing the problematic instructions.
 
 **Example**
 ```
