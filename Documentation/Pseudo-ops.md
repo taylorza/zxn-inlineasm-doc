@@ -11,6 +11,7 @@
 [DW](#dw)
 [EQU](#equ)
 [IF/ELSE/END](#ifelseend)
+[INCLUDE](#include)
 [LET](#let)
 [NBRK](#brk)
 [ORG](#org)
@@ -142,6 +143,18 @@ In the following example the register A will be zeroed using `xor`. Changing the
   ELSE
     xor a
   ENDIF
+```
+
+## INCLUDE
+Include external source files in the current source stream being assembled. Includes can be nested up to 8 levels deep, at each level there is no hard limit on the number of files that can be included. 
+
+Included source files do not follow the NextBASIC line numbering scheme or require a `;` to introduce assembly code lines. This facilitates the use of assembly libraries that can be shared by other assemblers as long as the code in the source file is compatible with the NextBASIC inline assembler.
+
+Errors reported from included files will indicate the file name and line number within the file that contains the offending instructions.
+
+**Example**
+```
+INCLUDE "rom48.def"
 ```
 
 ## LET

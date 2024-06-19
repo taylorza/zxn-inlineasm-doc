@@ -1,0 +1,3 @@
+CLS        equ $0daf     ; ULA CLS
+CHAN_OPEN  equ $1601     ; Open channel to stream
+PRINT      equ $203c     ; Print a string
