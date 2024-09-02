@@ -215,12 +215,12 @@ Syntax:
 SAVENEX "filename.nex",start_address,stack_address[,required_ram][,entry_bank]
 ```
 ## VAR
-Creates a variable thats value is allowed to vary between assembly passes.
+Creates a variable whose value is allowed to vary between assembly passes.
 
 **Example**
-To demonstrate `VAR` we need to see an example of code that will fail when using a non-variable.
+To demonstrate the use of `VAR`, we need to see an example of code that will fail when using a non-variable.
 
-The example below is just such an example. During the first pass `LEN` will not have a value when the `DS` is parsed, resulting in the placement of `lbl` being correct. During the second pass, `LEN` will have a value, causing the `DS` generate padding bytes which will shift `lbl` to a new address. Since `LEN`'s' value is relative to the address of `lbl` it will not change as it is still 4 bytes ahead of `lbl` regardless of `lbl`'s address.
+The example below illustrates this. During the first pass `LEN` will not have a value when the `DS` is parsed, resulting in the incorrect placement of `lbl`. During the second pass, `LEN` will have a value, causing the `DS` generate padding bytes, which will shift `lbl` to a new address. Since `LEN`'s' value is relative to the address of `lbl`, it will not change as it is still 4 bytes ahead of `lbl` regardless of `lbl`'s address.
 
 Assembling this example will result in the assembler raising a 'Value changed' error.
 
@@ -231,7 +231,7 @@ lbl
 LEN   EQU $-lbl
 ```
 
-To solve for this scenario, we can let the assembler know that we expect `lbl` to change between passes by defining it as a variable. The example below show how this is done. And since the machine code is only emitted in the final pass, the follow will generate the expected code/data layout.
+To solve this scenario, we can let the assembler know that we expect `lbl` to change between passes by defining it as a variable. The example below show how this is done. Since the machine code is only emitted in the final pass, the follow will generate the expected code/data layout.
 
 ```
       DS 32-LEN
