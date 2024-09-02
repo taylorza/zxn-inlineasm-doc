@@ -21,6 +21,7 @@
 [RELOC_START](#reloc_start)
 [RELOC_TABLE](#reloc_table)
 [SAVENEX](#savenex)
+[VAR](#var)
 
 # $ (dollar)
 Returns the current address/program counter at the point of assembly
@@ -212,6 +213,31 @@ Generated a NEX file from the assembled code. You need to use the [BANK](#bank) 
 Syntax:
 ```
 SAVENEX "filename.nex",start_address,stack_address[,required_ram][,entry_bank]
+```
+## VAR
+Creates a variable thats value is allowed to vary between assembly passes.
+
+**Example**
+To demonstrate `VAR` we need to see an example of code that will fail when using a non-variable.
+
+The example below is just such an example. During the first pass `LEN` will not have a value when the `DS` is parsed, resulting in the placement of `lbl` being correct. During the second pass, `LEN` will have a value, causing the `DS` generate padding bytes which will shift `lbl` to a new address. Since `LEN`'s' value is relative to the address of `lbl` it will not change as it is still 4 bytes ahead of `lbl` regardless of `lbl`'s address.
+
+Assembling this example will result in the assembler raising a 'Value changed' error.
+
+```
+      DS 32-LEN
+lbl
+      DB 1,2,3,4
+LEN   EQU $-lbl
+```
+
+To solve for this scenario, we can let the assembler know that we expect `lbl` to change between passes by defining it as a variable. The example below show how this is done. And since the machine code is only emitted in the final pass, the follow will generate the expected code/data layout.
+
+```
+      DS 32-LEN
+lbl   VAR $
+      DB 1,2,3,4
+LEN   EQU $-lbl
 ```
 
 
