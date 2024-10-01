@@ -7,8 +7,11 @@
 [BANK](#bank)
 [BRK](#brk)
 [DB](#db)
+[DC](#dc)
 [DS](#ds)
 [DW](#dw)
+[DZ](#dz)
+[DISPLAY](#display)
 [EQU](#equ)
 [IF/ELSE/END](#ifelseend)
 [INCLUDE](#include)
@@ -100,6 +103,15 @@ DB 1,42,"@"
 DB "Hello World",$0d,0
 ```
 
+## DC
+Defines a string or list of strings, where the last character of each string has the high bit set
+
+**Example**
+```
+DC "Hello"
+DC "String 1", "String 2"
+```
+
 ## DS
 Defines the specified number of bytes. The bytes are all set to 0
 
@@ -116,6 +128,34 @@ Defines a word
 ```
 DW 1263, $c100
 DW "Hello World", $000d
+```
+
+## DZ
+Defines a string or list of strings, where each string is terminated by a null terminator
+
+**Example**
+```
+DC "Hello"
+DC "String 1", "String 2"
+```
+
+## DISPLAY
+Displays text and expressions during the assembly process. Numeric expressions can be formatted using format switches. When switching modes, the new mode stays in effect until the end of the DISPLAY statement or until another switch is encountered
+
+|Switch|Mode|
+|------|--------|
+|/D|Decimal mode (default)|
+|/H|Hexadecimal mode. Unsigned values below 256 are represented by 2 hex characters, larger numbers are represented by 4 hex characters.
+|/B|Binary mode. Unsigned values below 256 are represented as 8 bits, larger numbers are represented as 16 bits.
+|/C|Char/ASCII mode. The ASCII representation of the low byte of the value is displayed ie. 65 will print an 'A'
+
+**Example**
+```
+DISPLAY "Hello"
+DISPLAY "Assembled at ", start
+DISPLAY "Assembled at ", /H, start
+DISPLAY "Assembled at ", /B, start
+DISPLAY "Assembled at ", /H, start, /C, 13, "Code Length ", /H, $-start
 ```
 
 ## EQU
