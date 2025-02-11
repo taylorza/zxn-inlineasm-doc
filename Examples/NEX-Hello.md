@@ -34,12 +34,7 @@ To include a memory bank in the NEX file, you must explicitly use the `BANK` pse
 
 ```
 
-Running the above program will generate our dot command. Since it is already in the right location, we can just invoke it using the following command
-
-```
-.hello
-```
-This can be run from NextBASIC or from the Command Line.
+Running the above program will generate hello.nex that can be launched from the browser
 
 
 
