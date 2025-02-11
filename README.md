@@ -10,6 +10,7 @@ Documentation repository for the [NextBASIC Inline Assembler](https://taylorza.i
 * [Conditional Assembly](Documentation/Conditional-Assembly.md)
 * [Pseudo-ops](Documentation/Pseudo-ops.md)
 * [Expressions](Documentation/Expressions.md)
+* [Assembling files directly](Documentation/Assemble-file.md)
 ## Examples
 ### NextBASIC Integration
 * [ToUpper$ Function](Examples/NextBASIC-ToUpper.md)
