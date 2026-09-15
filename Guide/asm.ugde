@@ -1,8 +1,8 @@
 @title .asm inline assembler
 @author Robert Franklin
-@version 0.8
+@version 0.9
 @copyright Copyright (C) 2026 Chris Taylor - taylorza
-@date 2026/05/08
+@date 2026/09/15
 @index INDEX
 @----------------------------------------------------------------------------
 @node MAIN
@@ -206,7 +206,10 @@ A label is identified as such, and not an instruction or
 line, with no leading spaces.
 
 A label can optionally be followed by a '@{b}:@{ub}' for readability, but this
-has no effect on the name.  Label names are case-insensitive.
+has no effect on the name.
+
+Label names are case-insensitive by default.  This can changed using the
+@{" OPTIONS " LINK OPTIONS} pseudo operation.
 
 @{h2}Global labels
 
@@ -329,9 +332,11 @@ See also: @{" LET " LINK LET}, @{" VAR " LINK VAR}
  @{" DISPLAY " LINK DISPLAY}         Display information during assembly
  @{" EQU " LINK EQU}             Define a constant
  @{" IF/ELSE/ENDIF " LINK IF}   Conditional assembly
+ @{" INCBIN " LINK INCBIN}          Include a binary file during assembly
  @{" INCLUDE " LINK INCLUDE}         Include a text file during assembly
  @{" LET " LINK LET}             Set the value of a NextBASIC integer variable
  @{" NBRK " LINK NBRK}            Insert hardware breakpoint, triggering Next debugger
+ @{" OPTIONS " LINK OPTIONS}         Select assembler configuration option
  @{" ORG " LINK ORG}             Set the base address for label calculation
  @{" OUTPUT " LINK OUTPUT}          Write assembled code to a file
  @{" RELOC_COUNT " LINK RELOC}     Return the number of relocations tracked.
@@ -510,6 +515,8 @@ The format for displaying numbers can be altered with switches:
  @{b}/C@{ub}       Character mode - uses the least significant byte as an ASCII value.
 
 When the format is changed, it will stay in effect until altered again.
+
+See also: @{" OPTIONS " LINK OPTIONS}
 @----------------------------------------------------------------------------
 @node EQU
 @{r}.asm inline assembler / Pseudo operations
@@ -555,6 +562,21 @@ alternative code blocks at runtime.
 
 See also: @{" ASSERT " LINK ASSERT}
 @----------------------------------------------------------------------------
+@node INCBIN
+@{r}.asm inline assembler / Pseudo operations
+
+@{c}@{h1}INCBIN
+
+Include binary data from a separate file:
+
+ @{b}INCBIN@{ub} "@{i}file@{ui}"
+
+The raw data in @{i}file@{ui} will be inserted into the assembled output at the
+position where @{b}INCBIN@{ub} is used.  A @{" label " LINK LABELS} can be
+specified before its use to determine the address of the included data.
+
+See also: @{" INCLUDE " LINK INCLUDE}, @{" OUTPUT " LINK OUTPUT}
+@----------------------------------------------------------------------------
 @node INCLUDE
 @{r}.asm inline assembler / Pseudo operations
 
@@ -572,7 +594,7 @@ The included files are stored as plain text, without line numbers, or leading
 semicolons but, otherwise, must be in a format supported by the assembler in a
 NextBASIC program.  See @{" line format " LINK FORMAT}.
 
-See also:
+See also: @{" INCBIN " LINK INCBIN},
 @{" OUTPUT " LINK OUTPUT}, @{" Assembling code from a file " LINK ASM_FILE}
 @----------------------------------------------------------------------------
 @node LET
@@ -619,6 +641,25 @@ This will trigger the NextZXOS debugger, equivalent to the assembly instruction
 @{b}NEXTREG 2,8@{ub} (or @{b}REG 2,8@{ub} in NextBASIC).
 
 See also: @{" ASSERT " LINK ASSERT}, @{" BRK " LINK BRK}
+@----------------------------------------------------------------------------
+@node OPTIONS
+@{r}.asm inline assembler / Pseudo operations
+
+@{c}@{h1}OPTIONS
+
+Select an assembler configuration option:
+
+ @{b}OPTIONS@{ub} @{i}option@{ui}
+
+Operations affect the behaviour of the assembler and enable, disable or change
+settings.  Currently available options are:
+
+ @{i}option@{ui}   Effect
+ ------   -------------------------------------------------------------------
+ @{b}CASE_I@{ub}   Label names are case-insensitive (default).
+ @{b}CASE_S@{ub}   Label names are case-sensitive.
+
+See also: @{" DISPLAY " LINK DISPLAY}, @{" Labels " LINK LABELS}
 @----------------------------------------------------------------------------
 @node ORG
 @{r}.asm inline assembler / Pseudo operations
@@ -774,11 +815,13 @@ an @{" EQU " LINK EQU} calculation, this will be variable).
  @{" File assembly " LINK ASM_FILE}
  @{" Format (line) " LINK FORMAT}
  @{" IF ... ELSE ... ENDIF " LINK IF}
+ @{" INCBIN " LINK INCBIN}
  @{" INCLUDE " LINK INCLUDE}
  @{" Inline assembly " LINK ASM_INLINE}
  @{" Labels " LINK LABELS}
  @{" LET " LINK LET}
  @{" NBRK " LINK NBRK}
+ @{" OPTIONS " LINK OPTIONS}
  @{" ORG " LINK ORG}
  @{" OUTPUT " LINK OUTPUT}
  @{" Pseudo operations " LINK PSEUDO_OPS}

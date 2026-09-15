@@ -194,7 +194,10 @@ A label is identified as such, and not an instruction or <pseudo operation> by
 appearing at the beginning of a line, with no leading spaces.
 
 A label can optionally be followed by a ':' for readability, but this has no
-effect on the name.  Label names are case-insensitive.
+effect on the name.
+
+Label names are case-insensitive by default.  This can changed using the
+<OPTIONS> pseudo operation.
 
 Global labels
 
@@ -316,9 +319,11 @@ Pseudo operations
  <DISPLAY>         Display information during assembly
  <EQU>             Define a constant
  <IF/ELSE/ENDIF>   Conditional assembly
+ <INCBIN>          Include a binary file during assembly
  <INCLUDE>         Include a text file during assembly
  <LET>             Set the value of a NextBASIC integer variable
  <NBRK>            Insert hardware breakpoint, triggering Next debugger
+ <OPTIONS>         Select assembler configuration option
  <ORG>             Set the base address for label calculation
  <OUTPUT>          Write assembled code to a file
  <RELOC_COUNT>     Return the number of relocations tracked.
@@ -501,6 +506,8 @@ The format for displaying numbers can be altered with switches:
 
 When the format is changed, it will stay in effect until altered again.
 
+See also: <OPTIONS>
+
 ---[ EQU ]---------------------------------------------------------------------
 
 .asm inline assembler / Pseudo operations
@@ -545,6 +552,22 @@ alternative code blocks at runtime.
 
 See also: <ASSERT>
 
+---[ INCBIN ]------------------------------------------------------------------
+
+.asm inline assembler / Pseudo operations
+
+INCBIN
+
+Include binary data from a separate file:
+
+ INCBIN "file"
+
+The raw data in file will be inserted into the assembled output at the position
+where INCBIN is used.  A <label> can be specified before its use to determine
+the address of the included data.
+
+See also: <INCLUDE>, <OUTPUT>
+
 ---[ INCLUDE ]-----------------------------------------------------------------
 
 .asm inline assembler / Pseudo operations
@@ -562,7 +585,7 @@ The included files are stored as plain text, without line numbers, or leading
 semicolons but, otherwise, must be in a format supported by the assembler in a
 NextBASIC program.  See <line format>.
 
-See also: <OUTPUT>, <Assembling code from a file>
+See also: <INCBIN>, <OUTPUT>, <Assembling code from a file>
 
 ---[ LET ]---------------------------------------------------------------------
 
@@ -608,6 +631,26 @@ This will trigger the NextZXOS debugger, equivalent to the assembly instruction
 NEXTREG 2,8 (or REG 2,8 in NextBASIC).
 
 See also: <ASSERT>, <BRK>
+
+---[ OPTIONS ]-----------------------------------------------------------------
+
+.asm inline assembler / Pseudo operations
+
+OPTIONS
+
+Select an assembler configuration option:
+
+ OPTIONS option
+
+Operations affect the behaviour of the assembler and enable, disable or change
+settings.  Currently available options are:
+
+ option   Effect
+ ------   -------------------------------------------------------------------
+ CASE_I   Label names are case-insensitive (default).
+ CASE_S   Label names are case-sensitive.
+
+See also: <DISPLAY>, <Labels>
 
 ---[ ORG ]---------------------------------------------------------------------
 
@@ -763,11 +806,13 @@ Index
  <File assembly>
  <Format (line)>
  <IF ... ELSE ... ENDIF>
+ <INCBIN>
  <INCLUDE>
  <Inline assembly>
  <Labels>
  <LET>
  <NBRK>
+ <OPTIONS>
  <ORG>
  <OUTPUT>
  <Pseudo operations>
