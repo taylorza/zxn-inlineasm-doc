@@ -511,7 +511,7 @@ Defines a list of 16-bit words, little endian (least significant byte first).
 This is similar to @{b}DB@{ub} and @{b}DC@{ub}, except that each string will be terminated by a 0
 byte.
 
-See also: @{" ALIGN " LINK ALIGN}
+See also: @{" ALIGN " LINK ALIGN}, @{" INCBIN " LINK INCBIN}
 @-------------------------------------------------------------------------------
 @node DISPLAY
 @prev DX
@@ -605,7 +605,7 @@ The raw data in @{i}file@{ui} will be inserted into the assembled output at the 
 where @{b}INCBIN@{ub} is used.  A @{" label " LINK LABELS} can be specified before its use to determine
 the address of the included data.
 
-See also: @{" INCLUDE " LINK INCLUDE}, @{" OUTPUT " LINK OUTPUT}
+See also: @{" Dx (define) " LINK DX}, @{" INCLUDE " LINK INCLUDE}, @{" OUTPUT " LINK OUTPUT}
 @-------------------------------------------------------------------------------
 @node INCLUDE
 @prev INCBIN

@@ -480,7 +480,7 @@ DZ - Define Zero-terminated String(s)
 This is similar to DB and DC, except that each string will be terminated by a 0
 byte.
 
-See also: <ALIGN>
+See also: <ALIGN>, <INCBIN>
 
 ---[ DISPLAY ]-----------------------------------------------------------------
 
@@ -566,7 +566,7 @@ The raw data in file will be inserted into the assembled output at the position
 where INCBIN is used.  A <label> can be specified before its use to determine
 the address of the included data.
 
-See also: <INCLUDE>, <OUTPUT>
+See also: <Dx (define)>, <INCLUDE>, <OUTPUT>
 
 ---[ INCLUDE ]-----------------------------------------------------------------
 
