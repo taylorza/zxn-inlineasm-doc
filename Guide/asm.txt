@@ -322,6 +322,7 @@ Pseudo operations
  <INCBIN>          Include a binary file during assembly
  <INCLUDE>         Include a text file during assembly
  <LET>             Set the value of a NextBASIC integer variable
+ <MAP>             Write a map file of symbols, values and types
  <NBRK>            Insert hardware breakpoint, triggering Next debugger
  <OPTIONS>         Select assembler configuration option
  <ORG>             Set the base address for label calculation
@@ -617,6 +618,22 @@ More information on this is given on the <BANK> page.
 
 See also: <EQU>
 
+---[ MAP ]---------------------------------------------------------------------
+
+.asm inline assembler / Pseudo operations
+
+MAP
+
+Write map file of symbols, values and types:
+
+ MAP "file"
+
+Writes a text file containing a list of all symbols (<constants> and <labels>),
+along with their values in hexadecimal, and type (EQU or LABEL).
+
+All symbols will be written to the file, regardless of the location of the MAP
+command in the code, even if they are defined later.
+
 ---[ NBRK ]--------------------------------------------------------------------
 
 .asm inline assembler / Pseudo operations
@@ -811,6 +828,7 @@ Index
  <Inline assembly>
  <Labels>
  <LET>
+ <MAP>
  <NBRK>
  <OPTIONS>
  <ORG>

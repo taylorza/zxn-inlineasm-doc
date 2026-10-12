@@ -343,6 +343,7 @@ See also: @{" LET " LINK LET}, @{" VAR " LINK VAR}
  @{" INCBIN " LINK INCBIN}          Include a binary file during assembly
  @{" INCLUDE " LINK INCLUDE}         Include a text file during assembly
  @{" LET " LINK LET}             Set the value of a NextBASIC integer variable
+ @{" MAP " LINK MAP}             Write a map file of symbols, values and types
  @{" NBRK " LINK NBRK}            Insert hardware breakpoint, triggering Next debugger
  @{" OPTIONS " LINK OPTIONS}         Select assembler configuration option
  @{" ORG " LINK ORG}             Set the base address for label calculation
@@ -630,7 +631,7 @@ See also: @{" INCBIN " LINK INCBIN}, @{" OUTPUT " LINK OUTPUT}, @{" Assembling c
 @-------------------------------------------------------------------------------
 @node LET
 @prev INCLUDE
-@next NBRK
+@next MAP
 @toc PSEUDO_OPS
 @{r}.asm inline assembler / Pseudo operations
 
@@ -660,8 +661,26 @@ More information on this is given on the @{" BANK " LINK BANK} page.
 
 See also: @{" EQU " LINK EQU}
 @-------------------------------------------------------------------------------
-@node NBRK
+@node MAP
 @prev LET
+@next NBRK
+@toc PSEUDO_OPS
+@{r}.asm inline assembler / Pseudo operations
+
+@{c}@{h1}MAP
+
+Write map file of symbols, values and types:
+
+ @{b}MAP@{ub} "@{i}file@{ui}"
+
+Writes a text @{i}file@{ui} containing a list of all symbols (@{" constants " LINK EQU} and @{" labels " LINK LABELS}),
+along with their values in hexadecimal, and type (EQU or LABEL).
+
+All symbols will be written to the file, regardless of the location of the @{b}MAP@{ub}
+command in the code, even if they are defined later.
+@-------------------------------------------------------------------------------
+@node NBRK
+@prev MAP
 @next OPTIONS
 @toc PSEUDO_OPS
 @{r}.asm inline assembler / Pseudo operations
@@ -869,6 +888,7 @@ calculation, this will be variable).
  @{" Inline assembly " LINK ASM_INLINE}
  @{" Labels " LINK LABELS}
  @{" LET " LINK LET}
+ @{" MAP " LINK MAP}
  @{" NBRK " LINK NBRK}
  @{" OPTIONS " LINK OPTIONS}
  @{" ORG " LINK ORG}
