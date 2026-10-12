@@ -243,7 +243,7 @@ Anonymous labels are not limited to a block delimited by global labels, but only
 the previous or next label can be referenced, so are only suitable for skipping
 short blocks, or jumping back to the start of the current loop.
 
-See also: <Line format>
+See also: <Line format>, <MAP>
 
 ---[ EXPRESSIONS ]-------------------------------------------------------------
 
@@ -297,7 +297,7 @@ bracketed expression, and raise a Syntax error.
 This can be resolved by rewriting the expression, or using a character other
 than a bracket as the parameter to the instruction, for example: "CP 0+(1+2)*3".
 
-See also: <LET>, <VAR>
+See also: <LET>, <MAP>, <VAR>
 
 ---[ PSEUDO_OPS ]--------------------------------------------------------------
 
@@ -526,7 +526,7 @@ Note that name must be written immediately at the beginning of a line, without a
 space between it and the ';' or start of the line, in the same manner as a
 <label>.  See <line format> for more information.
 
-See also: <LET>
+See also: <LET>, <MAP>
 
 ---[ IF ]----------------------------------------------------------------------
 

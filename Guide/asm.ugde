@@ -257,7 +257,7 @@ Anonymous labels are not limited to a block delimited by global labels, but
 only the previous or next label can be referenced, so are only suitable for
 skipping short blocks, or jumping back to the start of the current loop.
 
-See also: @{" Line format " LINK FORMAT}
+See also: @{" Line format " LINK FORMAT}, @{" MAP " LINK MAP}
 @----------------------------------------------------------------------------
 @node EXPRESSIONS
 @{r}.asm inline assembler
@@ -311,7 +311,7 @@ This can be resolved by rewriting the expression, or using a character other
 than a bracket as the parameter to the instruction, for example:
 "@{b}CP 0+(1+2)*3@{ub}".
 
-See also: @{" LET " LINK LET}, @{" VAR " LINK VAR}
+See also: @{" LET " LINK LET}, @{" MAP " LINK MAP}, @{" VAR " LINK VAR}
 @----------------------------------------------------------------------------
 @node PSEUDO_OPS
 @{r}.asm inline assembler
@@ -536,7 +536,7 @@ without a space between it and the '@{b};@{ub}' or start of the line, in the
 same manner as a @{" label " LINK LABELS}.  See @{" line format " LINK FORMAT}
 for more information.
 
-See also: @{" LET " LINK LET}
+See also: @{" LET " LINK LET}, @{" MAP " LINK MAP}
 @----------------------------------------------------------------------------
 @node IF
 @{r}.asm inline assembler / Pseudo operations
