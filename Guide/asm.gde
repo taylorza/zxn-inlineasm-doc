@@ -221,7 +221,7 @@ Label names are case-insensitive by default.  This can changed using the
 Global labels have names beginning with a letter '@{b}a@{ub}' to '@{b}z@{ub}' and are scoped to
 the entire program so can be referenced from anywhere directly.
 
-The entire name has the following format, limited to a maximum of 15 characters
+The entire name has the following format, limited to a maximum of 63 characters
 in total:
 
  {@{b}a@{ub}..@{b}z@{ub}}{@{b}.@{ub}|@{b}_@{ub}|@{b}a@{ub}..@{b}z@{ub}|@{b}0@{ub}..@{b}9@{ub}}*                (* = zero or more occurrences)
@@ -237,7 +237,7 @@ The entire name has the format:
  @{b}.@{ub}{@{b}.@{ub}|@{b}_@{ub}|@{b}a@{ub}..@{b}z@{ub}|@{b}0@{ub}..@{b}9@{ub}}+                     (+ = one or more occurrences)
 
 The entire name, including the global label used at the beginning of the scope,
-is limited to 15 characters.
+is limited to 63 characters.
 
 Within its scope, a name can be used directly (with the leading '@{b}.@{ub}').  To use a
 local label from another scope, it must be referenced using the block's starting

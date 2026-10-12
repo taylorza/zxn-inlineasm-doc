@@ -204,7 +204,7 @@ Global labels
 Global labels have names beginning with a letter 'a' to 'z' and are scoped to
 the entire program so can be referenced from anywhere directly.
 
-The entire name has the following format, limited to a maximum of 15 characters
+The entire name has the following format, limited to a maximum of 63 characters
 in total:
 
  {a..z}{.|_|a..z|0..9}*                (* = zero or more occurrences)
@@ -220,7 +220,7 @@ The entire name has the format:
  .{.|_|a..z|0..9}+                     (+ = one or more occurrences)
 
 The entire name, including the global label used at the beginning of the scope,
-is limited to 15 characters.
+is limited to 63 characters.
 
 Within its scope, a name can be used directly (with the leading '.').  To use a
 local label from another scope, it must be referenced using the block's starting
