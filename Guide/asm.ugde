@@ -1,8 +1,8 @@
 @title .asm inline assembler
 @author Robert Franklin
-@version 0.9
+@version 0.9a
 @copyright Copyright (C) 2026 Chris Taylor - taylorza
-@date 2026/09/15
+@date 2026/10/13
 @index INDEX
 @----------------------------------------------------------------------------
 @node MAIN
