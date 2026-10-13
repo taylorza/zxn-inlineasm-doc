@@ -243,7 +243,7 @@ Anonymous labels are not limited to a block delimited by global labels, but only
 the previous or next label can be referenced, so are only suitable for skipping
 short blocks, or jumping back to the start of the current loop.
 
-See also: <Line format>, <MAP>
+See also: <Line format>, <MAP>, <VAR>
 
 ---[ EXPRESSIONS ]-------------------------------------------------------------
 
@@ -292,7 +292,7 @@ Syntax ambiguity
 Sometimes an expression can cause ambiguity with the intended instruction and be
 parsed incorrectly.  For example: "CP (1+2)*3" would be interpreted as an
 operation with an invalid indirect address specification, rather than a
-bracketed expression, and raise a Syntax error.
+bracketed expression, and raise a 'Syntax error'.
 
 This can be resolved by rewriting the expression, or using a character other
 than a bracket as the parameter to the instruction, for example: "CP 0+(1+2)*3".
@@ -317,7 +317,7 @@ Pseudo operations
  <DW>              Define 16-bit word(s)
  <DZ>              Define string(s) terminated with 0 byte
  <DISPLAY>         Display information during assembly
- <EQU>             Define a constant
+ <EQU>             Define a value which is constant between passes
  <IF/ELSE/ENDIF>   Conditional assembly
  <INCBIN>          Include a binary file during assembly
  <INCLUDE>         Include a text file during assembly
@@ -332,7 +332,7 @@ Pseudo operations
  <RELOC_START>     Mark the start of a relocation block.
  <RELOC_TABLE>     Emit a relocation table.
  <SAVENEX>         Save a block of memory as a ".nex" file.
- <VAR>             Declare a named value to be variable.
+ <VAR>             Declare a value which can change between passes
 
 ---[ ALIGN ]-------------------------------------------------------------------
 
@@ -362,7 +362,7 @@ Abort assemly if an expression evaluates to false:
   ASSERT expr
 
 Evaluates the <expression> expr - if it results in a false (zero) value an
-Assertion false error is raised and assembly stopped.
+'Assertion false' error is raised and assembly stopped.
 
 See also: <IF ... ELSE ... ENDIF>
 
@@ -515,12 +515,16 @@ See also: <OPTIONS>
 
 EQU
 
-Define a constant:
+Define a value which is constant between passes:
 
  name EQU expr
 
 Defines the constant name to the numeric value of the result of evaluating the
 <expression> expr.
+
+The value of expr must not change between passes - if it does, a 'Value changed'
+error will be generated.  If the value needs to change, the <VAR> pseudo
+operation must be used, instead.
 
 Note that name must be written immediately at the beginning of a line, without a
 space between it and the ';' or start of the line, in the same manner as a
@@ -786,19 +790,27 @@ See also: <OUTPUT>
 
 VAR
 
-Declares a named value to be variable between passes:
+Declare a value which can change between passes:
 
- VAR expr
+ name VAR expr
 
-When assembling code with <expressions> that vary between passes (typically by
-using a label which occurs later in the code), the assembler will abort with a
-Value changed error.  The VAR pseudo operation will avoid this.
+This pseudo operation operates identically to <EQU> except that the result of
+evaluating the <expression> expr can vary between assembly passes, with the one
+in the final pass being used in the generated code.
 
-Typically VAR will be used with an expr of '$' (for the current address).
+This is useful when expr depends on a value which is not yet known, but
+determined later in the code and only available on the second pass, such as a
+<label> address that has not yet been calculated.  If this occurs with EQU, a
+'Value changed' error will be raised.
+
+Typically VAR will be used with an expr of '$' (for the current address), or one
+that involves it.
 
 Once a value is declared as a variable with VAR, that property will propagate
-through to all places where it is used (e.g. if the value is used in an <EQU>
+through to all places where it is used (e.g. if the value is used in an EQU
 calculation, this will be variable).
+
+See also: <LET>, <MAP>
 
 ---[ INDEX ]-------------------------------------------------------------------
 
